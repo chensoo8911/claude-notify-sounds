@@ -2,8 +2,9 @@
 #
 # claude-notify-sounds 移除腳本（macOS）
 #
-# 只移除本工具自己掛的三個 hook（用 command 路徑比對），保留你其餘的
-# settings 設定；並刪除 skill symlink 目錄。設定檔預設保留。
+# 只移除本工具掛過的 hook（Stop / Notification，含舊版的 PreToolUse bash；
+# 用 command 路徑比對），保留你其餘的 settings 設定；並刪除 skill symlink
+# 目錄。設定檔預設保留。
 #
 # 用法：bash uninstall.sh
 #
@@ -33,7 +34,7 @@ if [ -f "$SETTINGS" ] && command -v jq >/dev/null 2>&1 && jq empty "$SETTINGS" 2
   ' "$SETTINGS" > "$TMP"
   if jq empty "$TMP" 2>/dev/null; then
     mv "$TMP" "$SETTINGS"
-    echo "  ✅ 已從 settings.json 移除三個 hook（保留其餘設定）"
+    echo "  ✅ 已從 settings.json 移除本工具的 hook（保留其餘設定）"
   else
     rm -f "$TMP"
     echo "  ⚠️  移除後 JSON 異常，已略過（原檔未更動）" >&2

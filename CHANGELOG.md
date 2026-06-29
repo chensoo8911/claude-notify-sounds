@@ -2,6 +2,15 @@
 
 本專案的所有重大變更記錄於此（格式參考 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.0.0/)）。
 
+## [1.1.0] - 2026-06-30
+
+### Removed
+- 移除「**每次跑 bash**」時機（`PreToolUse(Bash)` hook、`notify-bash.sh`、`NOTIFY_BASH_*` 設定）。每跑一次指令就響太吵，且純音效情境下用處不大。現在只保留 **Stop（換你了）** 與 **Notification（需要你回應）** 兩個時機。
+
+### Changed
+- `install.sh` 改為只合併兩個 hook；文件 / 設定範本同步更新。
+- `uninstall.sh` 仍會清掉舊版裝過的 `PreToolUse` bash hook（向後相容）。
+
 ## [1.0.1] - 2026-06-30
 
 ### Changed

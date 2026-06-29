@@ -6,9 +6,9 @@
 #   1. 檢查依賴（macOS / afplay / jq）
 #   2. symlink SKILL.md + hooks 到 ~/.claude/skills/claude-notify-sounds/
 #   3. 建立 ~/.config/claude-notify-sounds/env（若不存在，從 config.example.env 複製）
-#   4. 用 jq「安全合併」三個 hook 進 ~/.claude/settings.json（保留既有設定，不覆蓋）
+#   4. 用 jq「安全合併」兩個 hook 進 ~/.claude/settings.json（保留既有設定，不覆蓋）
 #
-# 三個 hook 都「同步」播放（不掛 async）：async 會在 afplay 播完前
+# 兩個 hook 都「同步」播放（不掛 async）：async 會在 afplay 播完前
 # 把行程收掉 → 聽不到聲音。
 #
 # 用法：bash install.sh
@@ -21,7 +21,6 @@ SETTINGS="$HOME/.claude/settings.json"
 CONFIG_DIR="$HOME/.config/claude-notify-sounds"
 CONFIG_FILE="$CONFIG_DIR/env"
 
-HOOK_BASH="$SKILL_DIR/hooks/notify-bash.sh"
 HOOK_DONE="$SKILL_DIR/hooks/notify-done.sh"
 HOOK_WAITING="$SKILL_DIR/hooks/notify-waiting.sh"
 
@@ -92,11 +91,9 @@ if ! jq empty "$SETTINGS" 2>/dev/null; then
 fi
 
 TMP="$(mktemp)"
-jq --arg bash "$HOOK_BASH" --arg done "$HOOK_DONE" --arg waiting "$HOOK_WAITING" '
+jq --arg done "$HOOK_DONE" --arg waiting "$HOOK_WAITING" '
   def has_cmd($e; $c): ((.hooks[$e] // []) | map(.hooks[]?.command) | any(. == $c));
   .hooks = (.hooks // {})
-  | (if has_cmd("PreToolUse"; $bash) then .
-     else .hooks.PreToolUse = ((.hooks.PreToolUse // []) + [{"matcher":"Bash","hooks":[{"type":"command","command":$bash}]}]) end)
   | (if has_cmd("Stop"; $done) then .
      else .hooks.Stop = ((.hooks.Stop // []) + [{"hooks":[{"type":"command","command":$done}]}]) end)
   | (if has_cmd("Notification"; $waiting) then .
@@ -105,7 +102,6 @@ jq --arg bash "$HOOK_BASH" --arg done "$HOOK_DONE" --arg waiting "$HOOK_WAITING"
 
 if jq empty "$TMP" 2>/dev/null; then
   mv "$TMP" "$SETTINGS"
-  echo "  ✅ PreToolUse(Bash) → notify-bash.sh（每次 bash 音效）"
   echo "  ✅ Stop → notify-done.sh（換你了／這輪結束音效）"
   echo "  ✅ Notification → notify-waiting.sh（需要你回應音效）"
 else
@@ -122,5 +118,5 @@ echo "  1. 重啟 Claude Code（或開一次 /hooks）讓設定重載"
 echo "  2. 想改音效 / 開關 → 編輯 $CONFIG_FILE"
 echo "  3. 想移除 → bash $REPO_DIR/uninstall.sh"
 echo
-echo "⚠️  若你同時裝了 claude-notify-hooks（含通知版），兩者都會在同樣三個"
+echo "⚠️  若你同時裝了 claude-notify-hooks（含通知版），兩者會在相同"
 echo "    時機播音效 → 會聽到兩聲。請擇一安裝。"
