@@ -1,6 +1,6 @@
 # claude-notify-sounds
 
-讓 **Claude Code** 在 macOS 用**音效**提示你 —— 每次跑 bash、回答完畢、需要你回應（權限等待）時各播一個系統音效。**純音效，不跳任何桌面通知**。
+讓 **Claude Code** 在 macOS 用**音效**提示你 —— 每次跑 bash、換你了（這輪結束）、需要你回應（權限等待）時各播一個系統音效。**純音效，不跳任何桌面通知**。
 
 > 僅支援 **macOS**（用系統內建 `afplay`）。安裝時需要 [`jq`](https://jqlang.github.io/jq/) 來安全合併 settings.json。
 > 想要「會跳桌面通知」的完整版，看 👉 [claude-notify-hooks](https://github.com/chensoo8911/claude-notify-hooks)。
@@ -10,7 +10,7 @@
 | 事件 | 觸發 | 預設音效 |
 |---|---|---|
 | 每次跑 bash | Claude Code `PreToolUse(Bash)` hook | Frog 🐸 |
-| 回答完畢 | Claude Code `Stop` hook | Glass 🔔 |
+| 換你了（這輪結束）| Claude Code `Stop` hook | Glass 🔔 |
 | 需要你回應 / 批准 | Claude Code `Notification` hook | Funk |
 
 三個音色刻意分開，閉著眼睛也能分辨 Claude 現在在幹嘛。

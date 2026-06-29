@@ -106,7 +106,7 @@ jq --arg bash "$HOOK_BASH" --arg done "$HOOK_DONE" --arg waiting "$HOOK_WAITING"
 if jq empty "$TMP" 2>/dev/null; then
   mv "$TMP" "$SETTINGS"
   echo "  ✅ PreToolUse(Bash) → notify-bash.sh（每次 bash 音效）"
-  echo "  ✅ Stop → notify-done.sh（回答完畢音效）"
+  echo "  ✅ Stop → notify-done.sh（換你了／這輪結束音效）"
   echo "  ✅ Notification → notify-waiting.sh（需要你回應音效）"
 else
   rm -f "$TMP"

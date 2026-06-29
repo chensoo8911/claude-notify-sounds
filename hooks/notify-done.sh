@@ -1,6 +1,7 @@
 #!/bin/bash
-# claude-notify-sounds：回答完畢時播放音效
-# 由 Claude Code 的 Stop hook 觸發
+# claude-notify-sounds：「換你了」（這一輪結束）時播放音效
+# 由 Claude Code 的 Stop hook 觸發 —— Stop = 主對話這輪做完、把控制權交還給你
+# （包含我用文字反問你問題的情況），不是字面的「答完一段話」。
 # 純音效、不跳任何通知。
 set -e
 
