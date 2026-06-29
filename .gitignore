@@ -1,0 +1,12 @@
+.DS_Store
+*.bak
+*.swp
+.idea/
+.vscode/
+
+# 使用者本地設定（不應 commit）
+.env
+env
+
+# 測試沙箱
+/tmp-sandbox/
